@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class EvilCorpAppTest {
 	Bank b = new Bank();
-	WeatherMan w = new WeatherMan();
+	ParseDate w = new ParseDate();
 	@Test
 	public void test() {
 		Account user = b.createMemberAccount("Brandon");

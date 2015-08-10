@@ -1,11 +1,11 @@
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-public class WeatherMan {
+public class ParseDate {
 
 	final int MILLS_IN_DAY = 24*60*60*1000;
 	private HashMap<String,Integer> recognizedDates = new HashMap<String,Integer>();
-	public WeatherMan(){
+	public ParseDate(){
 	}
 	
 	public Date getDate(String d){

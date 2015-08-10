@@ -12,7 +12,7 @@ public class EvilCorpApp {
 		Scanner sc = new Scanner(System.in);
 		String filename = (System.getProperty("user.dir") + File.separatorChar + "Bank.txt");
 		Bank bank = new Bank();
-		WeatherMan w = new WeatherMan();
+		ParseDate w = new ParseDate();
 		boolean foundAccount = false, anotherAcct = true;
 		System.out.println("Welcome to Evil Corp Savings and Loan");
 		/* Needs work
