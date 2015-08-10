@@ -1,13 +1,40 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 public class EvilCorpApp {
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
+		String filename = (System.getProperty("user.dir") + File.separatorChar + "Bank.txt");
 		Bank bank = new Bank();
 		WeatherMan w = new WeatherMan();
 		boolean foundAccount = false, anotherAcct = true;
 		System.out.println("Welcome to Evil Corp Savings and Loan");
+		/* Needs work
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(filename));
+			String overhead = reader.readLine().trim();
+			System.out.println(overhead);
+			while(overhead!=null){
+				String[] userInfo = reader.readLine().split("\\s");
+				System.out.println(reader.readLine()); //+ userInfo[2]);
+				System.out.println(userInfo[0] + " " + userInfo[1] + " " + userInfo[2]);
+				Account a = new Account(Integer.parseInt(userInfo[0]),userInfo[1]);
+				a.calcBalance(Double.parseDouble(userInfo[2]));
+				bank.addMember(a);
+				overhead = reader.readLine().trim();
+				System.out.println(overhead);
+			}
+		} catch (FileNotFoundException e1) {
+			System.out.println("No data to grab from");
+		} catch (IOException e) {
+			
+		}*/
 		while (anotherAcct) {
 			System.out.println("If new user type new otherwise enter account number");
 			Account user = null;
@@ -97,11 +124,19 @@ public class EvilCorpApp {
 				user.addTransaction(t);
 			}
 			bank.processAllTransactions(user);
-			System.out.println("Transaction Summary");
-			System.out.println(user.printTransactions());
+			try {
+				PrintWriter p = new PrintWriter(filename);
+				p.println(user);
+				System.out.println("Transaction Summary");
+				System.out.println(user.printTransactions());
+				System.out.println("The account balance for " + user.getNumber() + " is " + user.getFormattedBalance());
+				System.out.println("Do you want to enter another account? (Y/N)");
+				p.close();
+			}
+			catch (FileNotFoundException e) {
+				System.out.println("File not found");
+			}
 			
-			System.out.println("The account balance for " + user.getNumber() + " is " + user.getFormattedBalance());
-			System.out.println("Do you want to enter another account? (Y/N)");
 			String cont = sc.nextLine();
 			if (cont.equalsIgnoreCase("n")) {
 				anotherAcct = false;

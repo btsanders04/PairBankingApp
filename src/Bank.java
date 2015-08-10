@@ -11,7 +11,7 @@ public class Bank {
 		return a;
 	}
 	
-	private void addMember(Account a){
+	public void addMember(Account a){
 		members.put(a.getNumber(), a);
 	}
 	

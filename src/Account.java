@@ -74,8 +74,6 @@ public class Account {
 		return String.format("%-10s%-10s%-10s","Account #","Name","Balance")+"\n" + String.format("%-10s%-10s%-10s",this.number,this.name,this.balance);
 	}
 	
-	
-	
 }
 
 
