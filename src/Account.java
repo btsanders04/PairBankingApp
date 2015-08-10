@@ -26,10 +26,10 @@ public class Account {
 	}
 	
 	public String printTransactions(){
-		String translist=String.format("%-20s%-10s%s","Date","Type","Amount");
+		String translist=String.format("%-20s%-15s%s","Date","Type","Amount");
 		translist+="\n";
 		for(Transaction t: transactionHistory){
-			translist+=String.format("%-20s%-10s%s",new SimpleDateFormat("EEE, d MMM yyyy").format(t.getDate()),t.getType(),t.getFormattedAmount());
+			translist+=String.format("%-20s%-15s%s",new SimpleDateFormat("EEE, d MMM yyyy").format(t.getDate()),t.getType(),t.getFormattedAmount());
 			translist+="\n";
 		}
 		return translist;
