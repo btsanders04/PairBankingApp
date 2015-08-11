@@ -31,7 +31,8 @@ public class Account {
 	public String printTransactions() {
 		String translist="";
 		if (transactionHistory.size() > 0) {
-			translist = String.format("%-20s%-15s%s", "Date", "Type",
+			translist+=("Transaction Summary \n");
+			translist += String.format("%-20s%-15s%s", "Date", "Type",
 					"Amount");
 			translist += "\n";
 			for (Transaction t : transactionHistory) {

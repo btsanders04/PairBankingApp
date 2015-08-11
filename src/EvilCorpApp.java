@@ -61,7 +61,17 @@ public class EvilCorpApp {
 						if(bank.getMemberAccount(terminateMembership).getBalance()==0){
 							bank.closeAccount(Integer.parseInt(closeAcct));
 						}
-					}	
+						else {
+							System.out.println("You can not close that account because it does not have a"
+									+ " balance of 0");
+							break beginningScreen;
+						}
+								
+					}
+					else {
+						System.out.println("That account cannot be found");
+						break beginningScreen;
+					}
 				}
 				if (account.equalsIgnoreCase("new")) {
 					System.out.println("Please Create an Account");
@@ -96,7 +106,7 @@ public class EvilCorpApp {
 					
 				}
 				else if(!Validator.checkAccount(account)){
-					System.out.println("You must enter a valide account.");
+					System.out.println("You must enter a valid account.");
 					foundAccount=false;
 				}
 				else if(bank.findMember(Integer.parseInt(account))) {
@@ -155,10 +165,9 @@ public class EvilCorpApp {
 				PrintWriter p = new PrintWriter(filename);
 				Iterator<Account> i = bank.getMembers().values().iterator();
 				while(i.hasNext()){
-					p.print(i.next());
-					p.println();
+					p.println(i.next());
 				}
-				System.out.println("Transaction Summary");
+				
 				System.out.println(user.printTransactions());
 				System.out.println("The account balance for " + user.getNumber() + " is " + user.getFormattedBalance());
 				System.out.println("Do you want to enter another account? (Y/N)");
