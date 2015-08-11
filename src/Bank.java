@@ -11,6 +11,20 @@ public class Bank {
 		return a;
 	}
 	
+	public void closeAccount(int acctnum){
+		
+		if(members.containsKey(acctnum)){
+			Account a = members.get(acctnum);
+			if(a.getBalance()==0){
+				members.remove(acctnum);
+			}
+		}
+	}
+	
+	public HashMap<Integer, Account> getMembers() {
+		return members;
+	}
+
 	public void addMember(Account a){
 		members.put(a.getNumber(), a);
 	}

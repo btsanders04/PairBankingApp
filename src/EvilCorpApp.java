@@ -14,32 +14,55 @@ public class EvilCorpApp {
 		Bank bank = new Bank();
 		ParseDate w = new ParseDate();
 		boolean foundAccount = false, anotherAcct = true;
+		StringTokenizer strtok;
+		String s;
 		System.out.println("Welcome to Evil Corp Savings and Loan");
-		/* Needs work
+		
+		//Read from file to get stored member data. Get Acct# UserName Balance
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(filename));
-			String overhead = reader.readLine().trim();
-			System.out.println(overhead);
-			while(overhead!=null){
-				String[] userInfo = reader.readLine().split("\\s");
-				System.out.println(reader.readLine()); //+ userInfo[2]);
-				System.out.println(userInfo[0] + " " + userInfo[1] + " " + userInfo[2]);
-				Account a = new Account(Integer.parseInt(userInfo[0]),userInfo[1]);
-				a.calcBalance(Double.parseDouble(userInfo[2]));
-				bank.addMember(a);
-				overhead = reader.readLine().trim();
-				System.out.println(overhead);
+			
+			while((s=reader.readLine())!= null){
+				strtok = new StringTokenizer(s," ");	
+				while(strtok.hasMoreTokens()){
+					int acctNum = Integer.parseInt(strtok.nextToken());
+					String name = strtok.nextToken();
+					Account a = new Account(acctNum,name);
+					double bal = Double.parseDouble(strtok.nextToken());
+					a.calcBalance(bal);
+					bank.addMember(a);
+				}
+				
 			}
+			reader.close();
 		} catch (FileNotFoundException e1) {
 			System.out.println("No data to grab from");
 		} catch (IOException e) {
 			
-		}*/
+		}
 		while (anotherAcct) {
-			System.out.println("If new user type new otherwise enter account number");
+			System.out.println("If new user type new otherwise enter account number. If you wish to close an account type close");
 			Account user = null;
+			beginningScreen:
 			while (!foundAccount) {
 				String account = sc.nextLine();
+				if(account.equalsIgnoreCase("close")){
+					System.out.println("Please enter account number you would like to close : ");
+					String closeAcct = sc.nextLine().trim();
+					while(!Validator.checkAccount(closeAcct)){
+						System.out.println("Please enter correct account number, Enter back to exit");
+						closeAcct=sc.nextLine().trim();
+						if(closeAcct.equalsIgnoreCase("back")){
+							break beginningScreen;
+						}
+					}
+					int terminateMembership = Integer.parseInt(closeAcct);
+					if(bank.findMember(terminateMembership)){
+						if(bank.getMemberAccount(terminateMembership).getBalance()==0){
+							bank.closeAccount(Integer.parseInt(closeAcct));
+						}
+					}	
+				}
 				if (account.equalsIgnoreCase("new")) {
 					System.out.println("Please Create an Account");
 					System.out.println("Enter your name : ");
@@ -49,8 +72,11 @@ public class EvilCorpApp {
 					while(!Validator.checkName(name)){
 						System.out.println("Please enter a correct name:");
 						name = sc.nextLine().trim();
+						
+						
 					}
-					user = bank.createMemberAccount(name);
+					String nameConcat = name.replace(' ', '.');
+					user = bank.createMemberAccount(nameConcat);
 					foundAccount = true;
 					System.out.println("An account has been created for "
 							+ user.getName() + ". \nYour account"
@@ -84,6 +110,7 @@ public class EvilCorpApp {
 				}
 			}
 			String type = "continue";
+			if(foundAccount){
 			while (!type.equals("-1")) {
 				System.out
 						.println("Enter a transaction type (Check, Debit, Deposit, Withdrawal) or -1 to finish : ");
@@ -126,7 +153,11 @@ public class EvilCorpApp {
 			bank.processAllTransactions(user);
 			try {
 				PrintWriter p = new PrintWriter(filename);
-				p.println(user);
+				Iterator<Account> i = bank.getMembers().values().iterator();
+				while(i.hasNext()){
+					p.print(i.next());
+					p.println();
+				}
 				System.out.println("Transaction Summary");
 				System.out.println(user.printTransactions());
 				System.out.println("The account balance for " + user.getNumber() + " is " + user.getFormattedBalance());
@@ -142,6 +173,7 @@ public class EvilCorpApp {
 				anotherAcct = false;
 			}
 			foundAccount=false;
+		}
 		}
 
 	}
