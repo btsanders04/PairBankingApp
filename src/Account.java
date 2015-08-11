@@ -85,9 +85,7 @@ public class Account {
 
 	@Override
 	public String toString() {
-		return // String.format("%-10s%-10s%-10s","Account #","Name","Balance")+"\n"
-				// +
-		String.format("%-10s%-20s%s", this.number, this.name, this.balance);
+		return String.format("%-10s%-20s%s", this.number, this.name, this.balance);
 	}
 
 }
