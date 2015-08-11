@@ -79,6 +79,10 @@ public class Account {
 		}
 	}
 
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
 	@Override
 	public String toString() {
 		return // String.format("%-10s%-10s%-10s","Account #","Name","Balance")+"\n"

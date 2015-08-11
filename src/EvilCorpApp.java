@@ -29,7 +29,7 @@ public class EvilCorpApp {
 					String name = strtok.nextToken();
 					Account a = new Account(acctNum,name);
 					double bal = Double.parseDouble(strtok.nextToken());
-					a.calcBalance(bal);
+					a.setBalance(bal);
 					bank.addMember(a);
 				}
 				
@@ -58,12 +58,13 @@ public class EvilCorpApp {
 					}
 					int terminateMembership = Integer.parseInt(closeAcct);
 					if(bank.findMember(terminateMembership)){
-						if(bank.getMemberAccount(terminateMembership).getBalance()==0){
+							if(bank.getMemberAccount(terminateMembership).getBalance()==0){
 							bank.closeAccount(Integer.parseInt(closeAcct));
 						}
 						else {
 							System.out.println("You can not close that account because it does not have a"
 									+ " balance of 0");
+							System.out.println("Your account balance is " + bank.getMemberAccount(terminateMembership).getFormattedBalance());
 							break beginningScreen;
 						}
 								

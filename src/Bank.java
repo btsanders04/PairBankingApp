@@ -5,7 +5,11 @@ public class Bank {
 	
 	public Account createMemberAccount(String name){
 		Random r = new Random();
+		
 		int acct = 100000+r.nextInt(899999);
+		while(!members.containsKey(acct)){
+			acct=100000+r.nextInt(899999);
+		}
 		Account a = new Account(acct, name);
 		addMember(a);
 		return a;
