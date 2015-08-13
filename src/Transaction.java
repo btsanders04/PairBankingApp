@@ -1,27 +1,24 @@
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.*;
 public class Transaction {
-	private String type;
+	private int type;
 	private double amount;
-	private Date date;
-	
+	private String date;
 
-	public Transaction(String type, double amount){
+	public Transaction(int type, double amount){
 		this.type = type;
 		this.amount = amount;
 		
 	}
 	
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
 	
-	public String getType() {
+	public int getType() {
 		return type;
 	}
 	
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 
@@ -34,6 +31,24 @@ public class Transaction {
 		NumberFormat nf = NumberFormat.getCurrencyInstance();
 		return nf.format(amount);
 	}
+	
+
+	@Override
+	public String toString() {
+		String t="";
+		switch(type){
+		case(1): t+="Deposit";
+		break;
+		case(2): t+="Check";
+		break;
+		case(3): t+="Withdraw";
+		break;
+		case(4): t+="Debit";
+		break;
+		}
+		return String.format("%-15s%-10s%s", t,getFormattedAmount(),getDate());
+	}
+	
 	
 	
 }

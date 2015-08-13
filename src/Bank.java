@@ -1,69 +1,42 @@
 import java.util.*;
 public class Bank {
 
-	private HashMap<Integer,Account> members= new HashMap<Integer,Account>();
-	
+//	private HashMap<Integer,Account> members= new HashMap<Integer,Account>();
+	BankDBQuery database = new BankDBQuery();
 	public Account createMemberAccount(String name){
 		Random r = new Random();
 		
-		int acct = 100000+r.nextInt(899999);
-		while(!members.containsKey(acct)){
-			acct=100000+r.nextInt(899999);
+		String acct = String.valueOf(100000+r.nextInt(899999));
+		while(database.findAccount(acct)){
+			acct=String.valueOf(100000+r.nextInt(899999));
 		}
 		Account a = new Account(acct, name);
-		addMember(a);
+		database.storeAccount(a);
 		return a;
 	}
 	
-	public void closeAccount(int acctnum){
-		
-		if(members.containsKey(acctnum)){
-			Account a = members.get(acctnum);
-			if(a.getBalance()==0){
-				members.remove(acctnum);
-			}
-		}
-	}
-	
-	public HashMap<Integer, Account> getMembers() {
-		return members;
-	}
-
-	public void addMember(Account a){
-		members.put(a.getNumber(), a);
-	}
-	
-	public boolean findMember(int key){
-		if(members.containsKey(key)){
-		return true;
-		}
-		else return false;
-	}
-
-	public Account getMemberAccount(int num){
-		return members.get(num);
-	}
-	
-	public void processAllTransactions(Account a){
-		Iterator<Transaction> i = a.getDatedTransactions().values().iterator();
-		while(i.hasNext()){
-			Transaction t = (Transaction)i.next();
+	public String processAllTransactions(Account a){
+		String print =String.format("%-15s%-10s%s","Transaction","Amount","Date");
+		print+="\n---------------------------------\n";
+		ArrayList<Transaction> transactions = database.getTransactions(a);
+		for(Transaction t: transactions){
 			processTransaction(t,a);
-			a.transactionInvoice(t);
+			print+= t + "\n";
 		}
-		a.removeTransactions();
+		database.updateTransactionStatus(a);
+		return print;
 	}
 	
 	public void processTransaction(Transaction t, Account a){
 		double amount = t.getAmount();
 		switch(t.getType()){
-		case("check"):a.calcBalance(-amount);
+		case(2):a.calcBalance(-amount);
 		break;
-		case("debit"): a.calcBalance(-amount);
+		case(4): a.calcBalance(-amount);
 		break;
-		case("withdraw"):a.calcBalance(-amount);
+		case(3):a.calcBalance(-amount);
 		break;
-		case("deposit"):a.calcBalance(amount);
+		case(1):a.calcBalance(amount);
 		break;
 		}
 	}
