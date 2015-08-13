@@ -1,0 +1,6 @@
+191170    Olu                 300.0
+643101    Sunny.Rathor        104500.0
+347107    Brandon.Sanders     4000.0
+122438    Brandon.Sanders     -289.0
+790132    Brooke.Strange      450.0
+908674    Gay.Boy             30040.0
