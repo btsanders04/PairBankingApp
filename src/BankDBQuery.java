@@ -3,7 +3,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Properties;
 import java.util.*;
 
 /**
@@ -13,50 +12,42 @@ import java.util.*;
  */
 public class BankDBQuery {
 	
-	
-	 private void updateDB(String sql)throws SQLException {
+
+     //properties for creating connection to Oracle database
+	public static Connection conn = null;
+	 
+    public static void openConnection(){
+		String url = "jdbc:oracle:thin:testuser/password@localhost"; 
+    	 Properties props = new Properties();
+    	 props.setProperty("user", "testdb");
+         props.setProperty("password", "password");
+         try {
+			conn = DriverManager.getConnection(url,props);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+	public void updateDB(String sql)throws SQLException {
 	        //URL of Oracle database server
-	        String url = "jdbc:oracle:thin:testuser/password@localhost"; 
-	        
-	        //properties for creating connection to Oracle database
-	        Properties props = new Properties();
-	        props.setProperty("user", "testdb");
-	        props.setProperty("password", "password");
-	      
-	        //creating connection to Oracle database using JDBC
-	        Connection conn = DriverManager.getConnection(url,props);
+	       
 
 	        //String sql ="select cust_last_name,cust_city,cust_state from demo_customers";
 
 	        //creating PreparedStatement object to execute query
 	        PreparedStatement preStatement = conn.prepareStatement(sql);
 	    
-	        preStatement.executeQuery(); 
-	        
-	        //conn.close();
+	        preStatement.setQueryTimeout(10);
+	        preStatement.executeUpdate(); 
+	       
 	      
 	    }
 	
-    private ResultSet getFromDB(String sql)throws SQLException {
-        //URL of Oracle database server
-        String url = "jdbc:oracle:thin:testuser/password@localhost"; 
-        
-        //properties for creating connection to Oracle database
-        Properties props = new Properties();
-        props.setProperty("user", "testdb");
-        props.setProperty("password", "password");
-      
-        //creating connection to Oracle database using JDBC
-        Connection conn = DriverManager.getConnection(url,props);
-
-        
-        //creating PreparedStatement object to execute query
+    public ResultSet getFromDB(String sql)throws SQLException {
+       
         PreparedStatement preStatement = conn.prepareStatement(sql);
-    
         ResultSet result = preStatement.executeQuery(); 
-        
-        //conn.close();
-
         return result;
       
     }
@@ -77,9 +68,10 @@ public class BankDBQuery {
 				a.setBalance(bal);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
+		
     	return a;
     }
     
@@ -92,7 +84,7 @@ public class BankDBQuery {
 			updateDB(sql);
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
     }
@@ -106,7 +98,7 @@ public class BankDBQuery {
 			updateDB(sql);
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
     }
@@ -125,7 +117,7 @@ public class BankDBQuery {
 		}
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
     	return transactions;
@@ -138,11 +130,10 @@ public class BankDBQuery {
 			updateDB(sql);
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
     }
-    
     
     public boolean findAccount(String number){
     	ResultSet result;
@@ -154,7 +145,7 @@ public class BankDBQuery {
 				return true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
     	return false;
@@ -166,18 +157,28 @@ public class BankDBQuery {
 			updateDB(sql);
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
     }
     
     public void deleteAccount(String account){
     	try {
-			String sql = "delete from member_account where member_id = '"+ account +"'";
+    		String sql = "delete from member_account where member_id = '"+ account +"'";
+		//	String sql = "delete from member_account where member_id = '"+ account +"'";
 			updateDB(sql);
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
+			e.printStackTrace();
+		}
+    }
+    
+    public void deleteTranscations(String account){
+    	try{
+    		String sql = "delete from transactions where member_id = '"+ account +"'";
+    		updateDB(sql);
+    	} catch (SQLException e) {
 			e.printStackTrace();
 		}
     }

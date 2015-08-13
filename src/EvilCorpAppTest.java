@@ -1,17 +1,32 @@
 import static org.junit.Assert.*;
 
+import java.sql.SQLException;
 import java.util.Date;
 
 import org.junit.Test;
 
-/*
+
 public class EvilCorpAppTest {
-	Bank b = new Bank();
-	ParseDate w = new ParseDate();
+	
+	
+	
 	@Test
 	public void test() {
-		Account user = b.createMemberAccount("Brandon");
-	//	Transaction one = new Transaction("deposit", 400.0);
+	BankDBQuery.openConnection();
+	BankDBQuery db = new BankDBQuery();
+	String account = "334534";
+	String sql = "delete from member_account where member_id = '"+account+"'";
+          
+	try {
+		db.updateDB(sql);
+		System.out.println("DONE");
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	}
+//		Account user = b.createMemberAccount("Brandon");
+/*	//	Transaction one = new Transaction("deposit", 400.0);
 		//b.processTransaction(one, user);
 		Date firstD = w.getDate("04/23/1990");
 	//	one.setDate(firstD);
@@ -36,6 +51,5 @@ public class EvilCorpAppTest {
 		System.out.println("The account balance for " + user.getNumber() + " is " + user.getFormattedBalance());
 		
 	}
-
-}
 */
+}
