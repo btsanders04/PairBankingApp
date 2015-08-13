@@ -1,22 +1,14 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.*;
 
 public class EvilCorpApp {
 
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
-		String filename = (System.getProperty("user.dir") + File.separatorChar + "Bank.txt");
 		Bank bank = new Bank();
 		BankDBQuery database = new BankDBQuery();
-		ParseDate w = new ParseDate();
+		BankDBQuery.openConnection();
 		boolean foundAccount = false, anotherAcct = true;
-		StringTokenizer strtok;
-		String s;
 		System.out.println("Welcome to Evil Corp Savings and Loan");
 		
 		
@@ -39,7 +31,9 @@ public class EvilCorpApp {
 					if(database.findAccount(account)){
 						Account deleteAccount = database.getAccount(account);
 						if(deleteAccount.getBalance()==0){
+							database.deleteTranscations(account);
 							database.deleteAccount(account);
+							break beginningScreen;
 						}
 						else {
 							System.out.println("You can not close that account because it does not have a"
@@ -165,6 +159,12 @@ public class EvilCorpApp {
 			foundAccount=false;
 		}
 		}
-
+try {
+	BankDBQuery.conn.close();
+	sc.close();
+} catch (SQLException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+}
 	}
 }
