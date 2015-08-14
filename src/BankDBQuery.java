@@ -90,18 +90,17 @@ public class BankDBQuery {
 		}
     }
     
-    public Account getAccount(String number){ 
+    public Account getAccount(String userId, String accNum){ 
     	Account a = null;
     	ResultSet result;
 		try {
-			String sql = "select * from account where member_id = '" + number + "'";
+			String sql = "select * from account where member_id = '" + userId + "' and AccountNumber = '" + accNum + "')";
 			result = getFromDB(sql);
 			
 			while(result.next()){
 				String acctNum = result.getString("AccountNumber");
 				int acctType = result.getInt("AccountType");
 				double bal = result.getDouble("balance");
-				String userId = result.getString("member_id");
 				
 				a = new Account(acctNum,userId,acctType);
 				a.setBalance(bal);
@@ -128,29 +127,31 @@ public class BankDBQuery {
 		}
     }
     
-    public void storeTransaction(Transaction transaction, Account account){
+    public void storeTransaction(Transaction transaction, Account account, String memberId){
     	
     	try {
 			String sql = "insert into transactions values(seq_transactions.nextval,'"+account.getNumber()+"', '"+
-					transaction.getUser_id() +"'," + transaction.getAmount()+",TO_DATE('"+transaction.getDate()+
-					"','mm/dd/yyyy'),0,"+transaction.getType()+")";
+					transaction.getAcctNum() +"', '" + memberId + "'," + transaction.getAmount()
+					+",TO_DATE('"+transaction.getDate()+"','mm/dd/yyyy'),0,"+transaction.getType()+")";
 			updateDB(sql);
 			
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
 		}
-    }
+    }  
+    
    
     public ArrayList<Transaction> getTransactions(Account account){
     	ResultSet result;
     	ArrayList<Transaction> transactions = new ArrayList<Transaction>();
     	try {
-			String sql = "select type,amount,t_date from transactions where member_id = '"+ account.getNumber()+
-					"'and status = 0 order by t_date";
+			String sql = "select AccountNumber,type,amount,t_date from transactions where AccountNumber = '"
+						+ account.getNumber() + "' and status = 0  order by t_date";
 			result = getFromDB(sql);
 		while(result.next()){
-			Transaction t = new Transaction(result.getInt("type"),result.getDouble("Amount"));
+			Transaction t = new Transaction(result.getInt("type"),
+					result.getString("AccountNumber"),result.getDouble("Amount"));
 			t.setDate(result.getDate("t_date").toString());
 			transactions.add(t);
 		}
@@ -161,11 +162,32 @@ public class BankDBQuery {
 		}
     	return transactions;
     }
+    
+    public String transactionHistory(Member member){
+    	ResultSet result;
+    	String history ="";
+    	  	try {
+			String sql = "select AccountNumber,type,amount,t_date from transactions where Member_ID = '"
+						+ member.getId() + "' and status = 0  order by t_date";
+			result = getFromDB(sql);
+			
+		while(result.next()){
+			history+= "\n" + String.format("-%15s-%10s-%10s-%10s",result.getString("AccountNumber"), 
+					result.getInt("type"),result.getDouble("amount"),result.getDate("t_date"));
+		
+		}
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+    	return history;
+    }
 
     public void updateTransactionStatus(Account account){
     	
     	try {
-			String sql = "update transactions set status = 1 where member_id = '"+ account.getNumber() +"'";
+			String sql = "update transactions set status = 1 where AccountNumber = '"+ account.getNumber() +"'";
 			updateDB(sql);
 			
 		} catch (SQLException e) {
@@ -174,10 +196,10 @@ public class BankDBQuery {
 		}
     }
     
-    public boolean findAccount(String number){
+    public boolean hasAccountAlready(String userid, int type ){
     	ResultSet result;
     	try {
-			String sql = "select count(member_id) as count from member_account where member_id = '"+ number +"'";
+			String sql = "select count(*) as count from Account where AccountNumber = '"+ userid +"' and AccountType = " + type;
 			result=getFromDB(sql);
 			result.next();
 			if(result.getInt("count")>0){
@@ -189,10 +211,10 @@ public class BankDBQuery {
 		}
     	return false;
     }
-    
+
     public void updateBalance(Account account){
     	try {
-			String sql = "update member_account set balance = " + account.getBalance() + " where member_id = '"+ account.getNumber() +"'";
+			String sql = "update member_account set balance = " + account.getBalance() + " where AccountNumber = '"+ account.getNumber() +"'";
 			updateDB(sql);
 			
 		} catch (SQLException e) {
@@ -203,7 +225,7 @@ public class BankDBQuery {
     
     public void deleteAccount(String account){
     	try {
-			String sql = "delete from member_account where member_id = '"+ account +"'";
+			String sql = "delete from member_account where AccountNumber = '"+ account +"'";
 			updateDB(sql);
 			
 		} catch (SQLException e) {
@@ -214,7 +236,7 @@ public class BankDBQuery {
     
     public void deleteTranscations(String account){
     	try{
-    		String sql = "delete from transactions where member_id = '"+ account +"'";
+    		String sql = "delete from transactions where AccountNumber = '"+ account +"'";
     		updateDB(sql);
     	} catch (SQLException e) {
 			e.printStackTrace();

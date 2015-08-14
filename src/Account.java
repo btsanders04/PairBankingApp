@@ -29,7 +29,16 @@ public class Account {
 	public int getAccType() {
 		return accType;
 	}
-
+	
+	public String getAccountString() {
+		switch(this.accType){
+			case(1):
+				return "Checking";
+			case(2):
+				return "Saving";
+		}	
+		return "";
+	}
 
 	public String getUser_id() {
 		return user_id;

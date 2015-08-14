@@ -4,7 +4,7 @@ import java.util.*;
 public class Member {
 	private String id;
 	private String name;
-	private int NoOfAccounts;
+	private int NoOfAccounts=0;
 
 	public Member(String user,String name) {
 		this.id = user;
