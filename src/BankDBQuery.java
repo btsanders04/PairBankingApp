@@ -129,8 +129,7 @@ public class BankDBQuery {
     public void storeTransaction(Transaction transaction, Account account, String memberId){
     	
     	try {
-			String sql = "insert into transactions values(seq_transactions.nextval,'"+account.getNumber()+"', '"+
-					transaction.getAcctNum() +"', '" + memberId + "'," + transaction.getAmount()
+			String sql = "insert into transactions values(seq_transactions.nextval,'"+	transaction.getAcctNum() +"', '" + memberId + "'," + transaction.getAmount()
 					+",TO_DATE('"+transaction.getDate()+"','mm/dd/yyyy'),0,"+transaction.getType()+")";
 			updateDB(sql);
 			
@@ -145,11 +144,11 @@ public class BankDBQuery {
     	ResultSet result;
     	ArrayList<Transaction> transactions = new ArrayList<Transaction>();
     	try {
-			String sql = "select AccountNumber,type,amount,t_date from transactions where AccountNumber = '"
+			String sql = "select AccountNumber,t_type,amount,t_date from transactions where AccountNumber = '"
 						+ account.getNumber() + "' and status = 0  order by t_date";
 			result = getFromDB(sql);
 		while(result.next()){
-			Transaction t = new Transaction(result.getInt("type"),
+			Transaction t = new Transaction(result.getInt("t_type"),
 					result.getString("AccountNumber"),result.getDouble("Amount"));
 			t.setDate(result.getDate("t_date").toString());
 			transactions.add(t);
