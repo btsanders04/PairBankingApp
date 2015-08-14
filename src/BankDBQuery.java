@@ -63,13 +63,13 @@ public class BankDBQuery {
 			String sql = "select * from member where member_id = '" + id + "'";
 			result = getFromDB(sql);
 			
-			result.next();
+			if(result.next()){
 			String user_id = result.getString("member_id");
 			String name = result.getString("name");
 			int noofAccounts = result.getInt("NoOfAccounts");
 			member = new Member(user_id,name);
 			member.setNoOfAccounts(noofAccounts);
-			
+			}
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
@@ -94,14 +94,13 @@ public class BankDBQuery {
     	Account a = null;
     	ResultSet result;
 		try {
-			String sql = "select * from account where member_id = '" + userId + "' and AccountNumber = '" + accNum + "')";
+			String sql = "select * from account where member_id = '" + userId + "' and AccountNumber = '" + accNum + "'";
 			result = getFromDB(sql);
 			
-			while(result.next()){
+			if(result.next()){
 				String acctNum = result.getString("AccountNumber");
 				int acctType = result.getInt("AccountType");
 				double bal = result.getDouble("balance");
-				
 				a = new Account(acctNum,userId,acctType);
 				a.setBalance(bal);
 			}

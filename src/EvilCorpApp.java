@@ -8,10 +8,12 @@ public class EvilCorpApp {
 		Bank bank = new Bank();
 		BankDBQuery database = new BankDBQuery();
 		BankDBQuery.openConnection();
-		boolean foundAccount = false, loggedOn = false;
+		boolean loggedOn = false;
 		System.out.println("Welcome to Evil Corp Savings and Loan");
 		System.out.format("%-10s%s", "New User", "1");
+		System.out.println();
 		System.out.format("%-10s%s", "Log On", "2");
+		System.out.println();
 		int enterSite = sc.nextInt();
 		sc.nextLine();
 		switch (enterSite) {
@@ -22,7 +24,6 @@ public class EvilCorpApp {
 			System.out
 					.println("You are now a member of Evil Corp Banking. Your id is : "
 							+ newUser.getId());
-			break;
 		case (2):
 			System.out.println("Enter your member id: ");
 			String memberId = sc.nextLine().trim();
@@ -32,10 +33,15 @@ public class EvilCorpApp {
 
 			while (loggedOn) {
 				System.out.format("%-20s%s", "Create Account", "1");
+				System.out.println();
 				System.out.format("%-20s%s", "Transactions", "2");
+				System.out.println();
 				System.out.format("%-20s%s", "Close Account", "3");
+				System.out.println();
 				System.out.format("%-20s%s", "Show Transaction History", "4");
-				System.out.format("%-20s%s", "Exit Application", "5");
+				System.out.println();
+				System.out.format("%-20s%s", "Log Out", "5");
+				System.out.println();
 				int action = sc.nextInt();
 				sc.nextLine();
 				switch (action) {
@@ -43,14 +49,17 @@ public class EvilCorpApp {
 
 					System.out.println("Enter account type :");
 					System.out.format("%-10s%s", "Checking", "1");
+					System.out.println();
 					System.out.format("%-10s%s", "Savings", "2");
+					System.out.println();
 
 					int typeofAccount = sc.nextInt();
 
 					sc.nextLine();
-					if (typeofAccount != 1 || typeofAccount != 2) {
+					if (typeofAccount > 2 && typeofAccount < 1){
 						System.out
-								.println("You have entered an incorrect value");
+						.println("You have entered an incorrect value");
+					
 						break;
 					}
 					System.out.println("Enter an initial balance : ");
@@ -59,7 +68,7 @@ public class EvilCorpApp {
 
 					Account account = bank.createNewAccount(member.getId(),
 							typeofAccount, balance);
-
+					
 					if (account == null) {
 						System.out
 								.println("You already have an account of this type");
@@ -67,7 +76,7 @@ public class EvilCorpApp {
 					}
 
 					System.out.println("An account has been created for "
-							+ member.getName() + ". \nYour + "
+							+ member.getName() + ". \nYour "
 							+ account.getAccountString()
 							+ " Account number is : " + account.getNumber());
 
@@ -94,12 +103,19 @@ public class EvilCorpApp {
 
 					transLoop: while (type != -1) {
 						System.out.println("Enter a transaction type : ");
+						System.out.println();
 						System.out.format("%-10s%s", "Deposit", "1");
+						System.out.println();
 						System.out.format("%-10s%s", "Check", "2");
+						System.out.println();
 						System.out.format("%-10s%s", "Withdraw", "3");
+						System.out.println();
 						System.out.format("%-10s%s", "Debit", "4");
+						System.out.println();
 						System.out.format("%-10s%s", "Transfer", "5");
+						System.out.println();
 						System.out.format("%-10s%s", "Exit", "-1");
+						System.out.println();
 
 						// validate
 						type = sc.nextInt();
@@ -195,7 +211,7 @@ public class EvilCorpApp {
 					}
 					break;
 				case (4):
-
+					System.out.println(database.transactionHistory(member));
 					break;
 
 				case (5):
