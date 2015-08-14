@@ -3,14 +3,14 @@ import java.util.*;
 
 public class Account {
 	private String number;
-	private String name;
+	private int accType;
 	private double balance = 0;
-//	private SortedMap<String, Transaction> datedTransactions = new TreeMap<String, Transaction>();
-	//private ArrayList<Transaction> transactionHistory = new ArrayList<Transaction>();
+	private String user_id;
 
-	public Account(String number, String name) {
+	public Account(String number, String user_id,int type) {
 		this.number = number;
-		this.name = name;
+		this.user_id = user_id;
+		this.accType=type;
 	}
 
 
@@ -18,21 +18,29 @@ public class Account {
 		return number;
 	}
 
-	public String getName() {
-		return name;
+	public String getUserID() {
+		return user_id;
 	}
 
 	public double getBalance() {
 		return balance;
 	}
 
+	public int getAccType() {
+		return accType;
+	}
+
+
+	public String getUser_id() {
+		return user_id;
+	}
+
 	public String getFormattedBalance() {
 		NumberFormat nf = NumberFormat.getCurrencyInstance();
-		// if(balance<0){
-		// return "-"+nf.format(balance);
-		// }
 		return nf.format(balance);
 	}
+
+	
 
 	public void calcBalance(double balance) {
 
@@ -49,15 +57,9 @@ public class Account {
 	@Override
 	public String toString() {
 		return String.format("%-10s%-20s%s", "Account", "Name", "Balance")+"\n"+
-			   String.format("%-10s%-20s%s", this.number, this.name, this.balance);
+			   String.format("%-10s%-20s%s", this.number, this.user_id, this.balance);
 	}
 
 }
 
-class DateComp implements Comparator<Date> {
-
-	@Override
-	public int compare(Date d1, Date d2) {
-		return d1.compareTo(d2);
-	}
 }

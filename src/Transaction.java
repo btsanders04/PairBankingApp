@@ -2,10 +2,12 @@ import java.text.NumberFormat;
 public class Transaction {
 	private int type;
 	private double amount;
+	private String acctNum;
 	private String date;
 
-	public Transaction(int type, double amount){
+	public Transaction(int type,String acctNum, double amount){
 		this.type = type;
+		this.acctNum=acctNum;
 		this.amount = amount;
 		
 	}
@@ -18,6 +20,9 @@ public class Transaction {
 		return type;
 	}
 	
+	public String getAcctNum() {
+		return acctNum;
+	}
 	public void setDate(String date) {
 		this.date = date;
 	}
