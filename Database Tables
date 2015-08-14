@@ -1,0 +1,16 @@
+create table member( member_id varchar2(30) PRIMARY KEY
+, name varchar2(30), 
+NoOfAccounts number(18,2));
+
+Create Table Account(AccountNumber VARCHAR2(30) Primary Key,
+AccountType Number(5),
+Balance Number(18,2),
+Member_ID varchar2(30) REFERENCES Member(Member_id));
+
+Create table Transaction(Transaction_id Number(30), 
+AccountNumber VARCHAR2(30) REFERENCES Account(AccountNumber),
+Member_ID varchar2(30) REFERENCES Member(member_id),
+amount number(18,20),
+T_date DATE,
+Status Number,
+t_Type Number(10));
