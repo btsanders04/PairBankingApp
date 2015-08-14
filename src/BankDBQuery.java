@@ -198,7 +198,7 @@ public class BankDBQuery {
     public boolean hasAccountAlready(String userid, int type ){
     	ResultSet result;
     	try {
-			String sql = "select count(*) as count from Account where AccountNumber = '"+ userid +"' and AccountType = " + type;
+			String sql = "select count(*) as count from Account where member_id = '"+ userid +"' and AccountType = " + type;
 			result=getFromDB(sql);
 			result.next();
 			if(result.getInt("count")>0){
