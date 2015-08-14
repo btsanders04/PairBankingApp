@@ -25,7 +25,7 @@ public class Bank {
 		if(database.hasAccountAlready(memberId,type)){
 			return null;
 		}
-		while(database.getAccount(accountId)!=null){
+		while(database.getAccount(memberId,accountId)!=null){
 			accountId=String.valueOf(100000+r.nextInt(899999));
 		}
 		Account a = new Account(accountId, memberId,type);

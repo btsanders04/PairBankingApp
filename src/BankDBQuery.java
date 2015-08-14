@@ -214,7 +214,7 @@ public class BankDBQuery {
 
     public void updateBalance(Account account){
     	try {
-			String sql = "update member_account set balance = " + account.getBalance() + " where AccountNumber = '"+ account.getNumber() +"'";
+			String sql = "update account set balance = " + account.getBalance() + " where AccountNumber = '"+ account.getNumber() +"'";
 			updateDB(sql);
 			
 		} catch (SQLException e) {
@@ -225,7 +225,7 @@ public class BankDBQuery {
     
     public void deleteAccount(String account){
     	try {
-			String sql = "delete from member_account where AccountNumber = '"+ account +"'";
+			String sql = "delete from account where AccountNumber = '"+ account +"'";
 			updateDB(sql);
 			
 		} catch (SQLException e) {

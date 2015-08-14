@@ -85,7 +85,7 @@ public class EvilCorpApp {
 
 					if (transactionAccount != null) {
 						System.out.println("Your account has been found : ");
-						System.out.println(account);
+						System.out.println(transactionAccount);
 					} else {
 						System.out.println("Sorry your account was not found.");
 						break;
@@ -157,20 +157,20 @@ public class EvilCorpApp {
 						if (type == 5) {
 							System.out
 									.println("Enter Account to transfer to :");
-							Account transferAccount = database.getAccount(sc
+							Account transferAccount = database.getAccount(member.getId(),sc
 									.nextLine().trim());
 							transferAccount.addTransfer(amount);
 							database.updateBalance(transferAccount);
 						}
 
 						// check if valid account, transfer money
-						database.storeTransaction(t, account, member.getId());
+						database.storeTransaction(t, transactionAccount, member.getId());
 					}
-					bank.processAllTransactions(account);
-					database.updateBalance(account);
+					bank.processAllTransactions(transactionAccount);
+					database.updateBalance(transactionAccount);
 					System.out.println("The account balance for "
-							+ account.getNumber() + " is "
-							+ account.getFormattedBalance());
+							+ transactionAccount.getNumber() + " is "
+							+ transactionAccount.getFormattedBalance());
 
 					break;
 
@@ -178,9 +178,9 @@ public class EvilCorpApp {
 					System.out
 							.println("Enter Account # you would like to close: ");
 					String close = sc.nextLine().trim();
-					if (database.findAccount(close)) {
-						Account deleteAccount = database.getAccount(close);
-						if (deleteAccount.getBalance() == 0) {
+					Account closeAccount = database.getAccount(member.getId(), close);
+					if (closeAccount!=null) {
+						if (closeAccount.getBalance() == 0) {
 							database.deleteTranscations(close);
 							database.deleteAccount(close);
 						} else {
@@ -188,7 +188,7 @@ public class EvilCorpApp {
 									.println("You can not close that account because it does not have a"
 											+ " balance of 0");
 							System.out.println("Your account balance is "
-									+ deleteAccount.getFormattedBalance());
+									+ closeAccount.getFormattedBalance());
 						}
 					} else {
 						System.out.println("That account cannot be found");
