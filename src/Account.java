@@ -40,7 +40,9 @@ public class Account {
 		return nf.format(balance);
 	}
 
-	
+	public void addTransfer(double transfer){
+		this.balance += transfer;
+	}
 
 	public void calcBalance(double balance) {
 

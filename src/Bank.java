@@ -3,29 +3,50 @@ public class Bank {
 
 //	private HashMap<Integer,Account> members= new HashMap<Integer,Account>();
 	BankDBQuery database = new BankDBQuery();
-	public Account createMemberAccount(String name){
+	
+	
+	//done
+	public Member createMember(String name){
 		Random r = new Random();
 		
-		String acct = String.valueOf(100000+r.nextInt(899999));
-		while(database.findAccount(acct)){
-			acct=String.valueOf(100000+r.nextInt(899999));
+		String memberid = String.valueOf(100000+r.nextInt(899999));
+		while(database.getUser(memberid)!=null){
+			memberid=String.valueOf(100000+r.nextInt(899999));
 		}
-		Account a = new Account(acct, name);
+		Member m = new Member(memberid, name);
+		database.createUser(m);
+		return m;
+	}
+	
+	public Account createNewAccount(String memberId, int type, double balance){
+		Random r = new Random();
+		
+		String accountId = String.valueOf(100000+r.nextInt(899999));
+		if(database.hasAccountAlready(memberId,type)){
+			return null;
+		}
+		while(database.getAccount(accountId)!=null){
+			accountId=String.valueOf(100000+r.nextInt(899999));
+		}
+		Account a = new Account(accountId, memberId,type);
+		a.setBalance(balance);
 		database.storeAccount(a);
 		return a;
 	}
 	
-	public String processAllTransactions(Account a){
-		String print =String.format("%-15s%-10s%s","Transaction","Amount","Date");
-		print+="\n---------------------------------\n";
-		ArrayList<Transaction> transactions = database.getTransactions(a);
+	
+	public void processAllTransactions( Account account){
+		//String print =String.format("%-15s%-10s%s","Transaction","Amount","Date");
+		//print+="\n---------------------------------\n";
+		ArrayList<Transaction> transactions = database.getTransactions(account);
 		for(Transaction t: transactions){
-			processTransaction(t,a);
-			print+= t + "\n";
+			processTransaction(t,account);
+			//print+= t + "\n";
 		}
-		database.updateTransactionStatus(a);
-		return print;
+		database.updateTransactionStatus(account);
 	}
+	
+	
 	
 	public void processTransaction(Transaction t, Account a){
 		double amount = t.getAmount();
