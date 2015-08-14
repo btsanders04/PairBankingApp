@@ -122,7 +122,7 @@ public class BankDBQuery {
 		}
     	return transactions;
     }
-    //must process first
+
     public void updateTransactionStatus(Account account){
     	
     	try {
@@ -164,8 +164,7 @@ public class BankDBQuery {
     
     public void deleteAccount(String account){
     	try {
-    		String sql = "delete from member_account where member_id = '"+ account +"'";
-		//	String sql = "delete from member_account where member_id = '"+ account +"'";
+			String sql = "delete from member_account where member_id = '"+ account +"'";
 			updateDB(sql);
 			
 		} catch (SQLException e) {
@@ -182,6 +181,5 @@ public class BankDBQuery {
 			e.printStackTrace();
 		}
     }
+}   
     
-    
-}
