@@ -10,8 +10,8 @@ public class EvilCorpApp {
 		BankDBQuery.openConnection();
 		boolean foundAccount = false, loggedOn = false;
 		System.out.println("Welcome to Evil Corp Savings and Loan");
-		System.out.format("%10s%s", "New User", "1");
-		System.out.format("%10s%s", "Log On", "2");
+		System.out.format("%-10s%s", "New User", "1");
+		System.out.format("%-10s%s", "Log On", "2");
 		int enterSite = sc.nextInt();
 		sc.nextLine();
 		switch (enterSite) {
@@ -20,63 +20,70 @@ public class EvilCorpApp {
 			String name = sc.nextLine().trim();
 			Member newUser = bank.createMember(name);
 			System.out
-					.println("You are now a member of Evil Corp Banking. Your id is : " + newUser.getId());
+					.println("You are now a member of Evil Corp Banking. Your id is : "
+							+ newUser.getId());
 			break;
 		case (2):
 			System.out.println("Enter your member id: ");
 			String memberId = sc.nextLine().trim();
 			Member member = database.getUser(memberId);
-			if(member!=null)
-				loggedOn=true;
+			if (member != null)
+				loggedOn = true;
 
 			while (loggedOn) {
-				System.out.format("%20s%s", "Create Account", "1");
-				System.out.format("%20s%s", "Transactions", "2");
-				System.out.format("%20s%s", "Close Account", "3");
-				System.out.format("%20s%s", "Show Transaction History", "4");
-				System.out.format("%20s%s", "Exit Application", "5");
+				System.out.format("%-20s%s", "Create Account", "1");
+				System.out.format("%-20s%s", "Transactions", "2");
+				System.out.format("%-20s%s", "Close Account", "3");
+				System.out.format("%-20s%s", "Show Transaction History", "4");
+				System.out.format("%-20s%s", "Exit Application", "5");
 				int action = sc.nextInt();
 				sc.nextLine();
 				switch (action) {
 				case (1):
-					
+
 					System.out.println("Enter account type :");
-					System.out.format("%10s%s", "Checking", "1");
-					System.out.format("%10s%s", "Savings", "2");
-					
+					System.out.format("%-10s%s", "Checking", "1");
+					System.out.format("%-10s%s", "Savings", "2");
+
 					int typeofAccount = sc.nextInt();
-					
+
 					sc.nextLine();
-					if(typeofAccount!=1 || typeofAccount != 2){
-						System.out.println("You have entered an incorrect value");
+					if (typeofAccount != 1 || typeofAccount != 2) {
+						System.out
+								.println("You have entered an incorrect value");
 						break;
 					}
 					System.out.println("Enter an initial balance : ");
 					double balance = sc.nextDouble();
 					sc.nextLine();
-					
-					Account account = bank.createNewAccount(member.getId(), typeofAccount, balance); 
-					
-					if(account==null){
-						System.out.println("You already have an account of this type");
+
+					Account account = bank.createNewAccount(member.getId(),
+							typeofAccount, balance);
+
+					if (account == null) {
+						System.out
+								.println("You already have an account of this type");
 						break;
 					}
-					
-				    System.out.println("An account has been created for "+ member.getName() + 
-				    	  ". \nYour + " + account.getAccountString() +
-						  " Account number is : " + account.getNumber());
-					
-				    System.out.println("You have " + account.getFormattedBalance()
-					 + " in your account.");
-				    
+
+					System.out.println("An account has been created for "
+							+ member.getName() + ". \nYour + "
+							+ account.getAccountString()
+							+ " Account number is : " + account.getNumber());
+
+					System.out.println("You have "
+							+ account.getFormattedBalance()
+							+ " in your account.");
+
 					break;
 
 				case (2): // transaction
 					System.out.println("Please enter your account number");
 					String number = sc.nextLine().trim();
-					Account transactionAccount = database.getAccount(member.getId(),number);
-					
-					if (transactionAccount!=null) {
+					Account transactionAccount = database.getAccount(
+							member.getId(), number);
+
+					if (transactionAccount != null) {
 						System.out.println("Your account has been found : ");
 						System.out.println(account);
 					} else {
@@ -87,13 +94,13 @@ public class EvilCorpApp {
 
 					transLoop: while (type != -1) {
 						System.out.println("Enter a transaction type : ");
-						System.out.format("%10s%s", "Deposit", "1");
-						System.out.format("%10s%s", "Check", "2");
-						System.out.format("%10s%s", "Withdraw", "3");
-						System.out.format("%10s%s", "Debit", "4");
-						System.out.format("%10s%s", "Transfer", "5");
-						System.out.format("%10s%s", "Exit", "-1");
-						
+						System.out.format("%-10s%s", "Deposit", "1");
+						System.out.format("%-10s%s", "Check", "2");
+						System.out.format("%-10s%s", "Withdraw", "3");
+						System.out.format("%-10s%s", "Debit", "4");
+						System.out.format("%-10s%s", "Transfer", "5");
+						System.out.format("%-10s%s", "Exit", "-1");
+
 						// validate
 						type = sc.nextInt();
 						sc.nextLine();
@@ -142,27 +149,29 @@ public class EvilCorpApp {
 									.println("please enter a valide date in the form of mm/dd/yyyy");
 							date = sc.nextLine().trim();
 						}
-						
-						Transaction t = new Transaction(type, transactionAccount.getNumber(), amount);
+
+						Transaction t = new Transaction(type,
+								transactionAccount.getNumber(), amount);
 						t.setDate(date);
-						
-						if(type==5){
-						System.out.println("Enter Account to transfer to :");
-						Account transferAccount = database.getAccount(sc.nextLine().trim());
-						transferAccount.addTransfer(amount);
-						database.updateBalance(transferAccount);
+
+						if (type == 5) {
+							System.out
+									.println("Enter Account to transfer to :");
+							Account transferAccount = database.getAccount(sc
+									.nextLine().trim());
+							transferAccount.addTransfer(amount);
+							database.updateBalance(transferAccount);
 						}
-						
-							// check if valid account, transfer money
+
+						// check if valid account, transfer money
 						database.storeTransaction(t, account, member.getId());
 					}
-					/**
-					 * System.out.println(bank.processAllTransactions(user));
-					 * database.updateBalance(user);
-					 * System.out.println("The account balance for " +
-					 * user.getNumber() + " is " + user.getFormattedBalance());
-					 * System.out
-					 */
+					bank.processAllTransactions(account);
+					database.updateBalance(account);
+					System.out.println("The account balance for "
+							+ account.getNumber() + " is "
+							+ account.getFormattedBalance());
+
 					break;
 
 				case (3): // close account
@@ -185,12 +194,12 @@ public class EvilCorpApp {
 						System.out.println("That account cannot be found");
 					}
 					break;
-				case(4):
-					
+				case (4):
+
 					break;
-					
+
 				case (5):
-					loggedOn = false;	
+					loggedOn = false;
 					break;
 				}
 
