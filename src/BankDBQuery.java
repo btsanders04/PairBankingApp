@@ -166,7 +166,7 @@ public class BankDBQuery {
     	ResultSet result;
     	String history ="";
     	  	try {
-			String sql = "select AccountNumber,type,amount,t_date from transactions where Member_ID = '"
+			String sql = "select AccountNumber,t_type,amount,t_date from transactions where Member_ID = '"
 						+ member.getId() + "' and status = 0  order by t_date";
 			result = getFromDB(sql);
 			
