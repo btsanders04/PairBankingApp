@@ -51,20 +51,59 @@ public class BankDBQuery {
         return result;
       
     }
+    /**
+     * 
+     * @param id
+     * @return member else return null if member does not exist
+     */
+    public Member getUser(String id){ 
+      	ResultSet result;
+      	Member member = null;
+		try {
+			String sql = "select * from member where member_id = '" + id + "'";
+			result = getFromDB(sql);
+			
+			result.next();
+			String user_id = result.getString("member_id");
+			String name = result.getString("name");
+			int noofAccounts = result.getInt("NoOfAccounts");
+			member = new Member(user_id,name);
+			member.setNoOfAccounts(noofAccounts);
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+    	return member;
+    }
+        
+    public void createUser(Member user){ 
+		try {
+			String sql = "insert into member values('"+user.getId()+"','"+user.getName()+"',"
+						+user.getNoOfAccounts()+")";
+			updateDB(sql);
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+    }
     
     public Account getAccount(String number){ 
     	Account a = null;
     	ResultSet result;
 		try {
-			String sql = "select * from member_account where member_id = '" + number + "'";
+			String sql = "select * from account where member_id = '" + number + "'";
 			result = getFromDB(sql);
 			
 			while(result.next()){
-				String acctNum = result.getString("member_id");
-				String name = result.getString("name");
+				String acctNum = result.getString("AccountNumber");
+				int acctType = result.getInt("AccountType");
 				double bal = result.getDouble("balance");
+				String userId = result.getString("member_id");
 				
-				a = new Account(acctNum,name);
+				a = new Account(acctNum,userId,acctType);
 				a.setBalance(bal);
 			}
 		} catch (SQLException e) {
@@ -78,8 +117,8 @@ public class BankDBQuery {
     public void storeAccount(Account account){
     	
     	try {
-			String sql = "insert into member_account values('"+account.getNumber()+"','"
-					+account.getName()+"',"+account.getBalance()+")";
+			String sql = "insert into account values('"+account.getNumber()+"',"
+					+account.getAccType()+","+account.getBalance()+",'" + account.getUser_id() +"')";
  
 			updateDB(sql);
 			
@@ -92,8 +131,8 @@ public class BankDBQuery {
     public void storeTransaction(Transaction transaction, Account account){
     	
     	try {
-			String sql = "insert into transactions values(seq_transactions.nextval,'"+account.getNumber()+"',"+
-					transaction.getAmount()+",TO_DATE('"+transaction.getDate()+
+			String sql = "insert into transactions values(seq_transactions.nextval,'"+account.getNumber()+"', '"+
+					transaction.getUser_id() +"'," + transaction.getAmount()+",TO_DATE('"+transaction.getDate()+
 					"','mm/dd/yyyy'),0,"+transaction.getType()+")";
 			updateDB(sql);
 			
