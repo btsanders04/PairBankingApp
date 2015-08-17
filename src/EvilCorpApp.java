@@ -10,9 +10,11 @@ public class EvilCorpApp {
 		BankDBQuery.openConnection();
 		boolean loggedOn = false;
 		System.out.println("Welcome to Evil Corp Savings and Loan");
-		System.out.format("%-10s%s", "New User", "1");
-		System.out.println();
-		System.out.format("%-10s%s", "Log On", "2");
+		System.out.format("%s", "\n----------------\n");
+		System.out.format("%-10s%s", "| New User", " - 1 |");
+		System.out.format("%s", "\n|--------------|\n");
+		System.out.format("%-10s%s", "| Log On", " - 2 |");
+		System.out.format("%s", "\n----------------\n");
 		System.out.println();
 		int enterSite = sc.nextInt();
 		sc.nextLine();
@@ -32,16 +34,17 @@ public class EvilCorpApp {
 				loggedOn = true;
 
 			while (loggedOn) {
-				System.out.format("%-20s%s", "Create Account", "1");
-				System.out.println();
-				System.out.format("%-20s%s", "Transactions", "2");
-				System.out.println();
-				System.out.format("%-20s%s", "Close Account", "3");
-				System.out.println();
-				System.out.format("%-20s%s", "Show Transaction History", "4");
-				System.out.println();
-				System.out.format("%-20s%s", "Log Out", "5");
-				System.out.println();
+				System.out.format("%s", "\n------------------------\n");
+				System.out.format("%-20s%s", "|Create Account", "-1 |");
+				System.out.format("%s", "\n|----------------------|\n");
+				System.out.format("%-20s%s", "|Transactions", "-2 |");
+				System.out.format("%s", "\n|----------------------|\n");
+				System.out.format("%-20s%s", "|Close Account", "-3 |");
+				System.out.format("%s", "\n|----------------------|\n");
+				System.out.format("%-20s%s", "|History", "-4 |");
+				System.out.format("%s", "\n|----------------------|\n");
+				System.out.format("%-20s%s", "|Log Out", "-5 |");
+				System.out.format("%s", "\n------------------------\n");
 				int action = sc.nextInt();
 				sc.nextLine();
 				switch (action) {
@@ -102,19 +105,19 @@ public class EvilCorpApp {
 
 					transLoop: while (type != -1) {
 						System.out.println("Enter a transaction type : ");
-						System.out.println();
-						System.out.format("%-10s%s", "Deposit", "1");
-						System.out.println();
-						System.out.format("%-10s%s", "Check", "2");
-						System.out.println();
-						System.out.format("%-10s%s", "Withdraw", "3");
-						System.out.println();
-						System.out.format("%-10s%s", "Debit", "4");
-						System.out.println();
-						System.out.format("%-10s%s", "Transfer", "5");
-						System.out.println();
-						System.out.format("%-10s%s", "Exit", "-1");
-						System.out.println();
+						System.out.format("%s", "\n-----------------\n");
+						System.out.format("%-10s%s", "|Deposit", " -1   |");
+						System.out.format("%s", "\n|---------------|\n");
+						System.out.format("%-10s%s", "|Check", " -2   |");
+						System.out.format("%s", "\n|---------------|\n");
+						System.out.format("%-10s%s", "|Withdraw", " -3   |");
+						System.out.format("%s", "\n|---------------|\n");
+						System.out.format("%-10s%s", "|Debit", " -4   |");
+						System.out.format("%s", "\n|---------------|\n");
+						System.out.format("%-10s%s", "|Transfer", " -5   |");
+						System.out.format("%s", "\n|---------------|\n");
+						System.out.format("%-10s%s", "|Exit", " -(-1)|");
+						System.out.format("%s", "\n-----------------\n");
 
 						// validate
 						type = sc.nextInt();
