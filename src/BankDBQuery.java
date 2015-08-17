@@ -90,17 +90,18 @@ public class BankDBQuery {
 		}
     }
     
-    public Account getAccount(String userId, String accNum){ 
+    public Account getAccount(String accNum){ 
     	Account a = null;
     	ResultSet result;
 		try {
-			String sql = "select * from account where member_id = '" + userId + "' and AccountNumber = '" + accNum + "'";
+			String sql = "select * from account where AccountNumber = '" + accNum + "'";
 			result = getFromDB(sql);
-			
+
 			if(result.next()){
 				String acctNum = result.getString("AccountNumber");
 				int acctType = result.getInt("AccountType");
 				double bal = result.getDouble("balance");
+				String userId = result.getString("member_id");
 				a = new Account(acctNum,userId,acctType);
 				a.setBalance(bal);
 			}

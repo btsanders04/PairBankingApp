@@ -10,7 +10,7 @@ Member_ID varchar2(30) REFERENCES Member(Member_id));
 Create table Transaction(Transaction_id Number(30), 
 AccountNumber VARCHAR2(30) REFERENCES Account(AccountNumber),
 Member_ID varchar2(30) REFERENCES Member(member_id),
-amount number(18,20),
+amount number(18,2),
 T_date DATE,
 Status Number,
-t_Type Number(10));
+t_Type Number);

@@ -89,8 +89,7 @@ public class EvilCorpApp {
 				case (2): // transaction
 					System.out.println("Please enter your account number");
 					String number = sc.nextLine().trim();
-					Account transactionAccount = database.getAccount(
-							member.getId(), number);
+					Account transactionAccount = database.getAccount(number);
 
 					if (transactionAccount != null) {
 						System.out.println("Your account has been found : ");
@@ -173,8 +172,8 @@ public class EvilCorpApp {
 						if (type == 5) {
 							System.out
 									.println("Enter Account to transfer to :");
-							Account transferAccount = database.getAccount(member.getId(),sc
-									.nextLine().trim());
+							//String accNum = sc.nextLine().trim());
+							Account transferAccount = database.getAccount(sc.nextLine().trim());
 							transferAccount.addTransfer(amount);
 							database.updateBalance(transferAccount);
 						}
@@ -194,7 +193,7 @@ public class EvilCorpApp {
 					System.out
 							.println("Enter Account # you would like to close: ");
 					String close = sc.nextLine().trim();
-					Account closeAccount = database.getAccount(member.getId(), close);
+					Account closeAccount = database.getAccount(close);
 					if (closeAccount!=null) {
 						if (closeAccount.getBalance() == 0) {
 							database.deleteTranscations(close);
