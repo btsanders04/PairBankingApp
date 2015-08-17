@@ -6,7 +6,7 @@ public class Account {
 	private int accType;
 	private double balance = 0;
 	private String user_id;
-	private BankDBQuery db;
+	private BankDBQuery db = new BankDBQuery();
 
 	public Account(String number, String user_id, int type) {
 		this.number = number;
