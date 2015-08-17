@@ -171,7 +171,7 @@ public class BankDBQuery {
 			
 		while(result.next()){
 			history+= "\n" + String.format("-%15s-%10s-%10s-%10s",result.getString("AccountNumber"), 
-					result.getInt("type"),result.getDouble("amount"),result.getDate("t_date"));
+					result.getInt("t_type"),result.getDouble("amount"),result.getDate("t_date"));
 		
 		}
 			
