@@ -1,6 +1,3 @@
-import java.text.NumberFormat;
-import java.util.*;
-
 public class Member {
 	private String id;
 	private String name;

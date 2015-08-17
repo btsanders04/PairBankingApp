@@ -189,12 +189,16 @@ public class BankDBQuery {
     	String history ="";
     	  	try {
 			String sql = "select AccountNumber,t_type,amount,t_date from transactions where Member_ID = '"
-						+ member.getId() + "' and status = 0  order by t_date";
+						+ member.getId() + "' order by t_date";
 			result = getFromDB(sql);
-			
+			history = "-------------------------------------------------------------";
+			history +=  "\n" + String.format("%-15s%-10s%-10s%s", "Account Number",
+					"Transaction Type", "Amount","Date of Transaction"); 
+			history += "\n|-----------------------------------------------------------|\n";
 		while(result.next()){
-			history+= "\n" + String.format("-%15s-%10s-%10s-%10s",result.getString("AccountNumber"), 
-					result.getInt("t_type"),result.getDouble("amount"),result.getDate("t_date"));
+			history+=  String.format("%-10s%-10s%-5s%-5s%-8s%-8s%-3s","|"+result.getString("AccountNumber"), "|", 
+					result.getInt("t_type") ,"|", result.getDouble("amount"),"|",result.getDate("t_date") + "    |");
+			history+= "\n|-----------------------------------------------------------|\n";
 		
 		}
 			

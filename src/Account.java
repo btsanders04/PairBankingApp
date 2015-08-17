@@ -1,5 +1,4 @@
 import java.text.NumberFormat;
-import java.util.*;
 
 public class Account {
 	private String number;

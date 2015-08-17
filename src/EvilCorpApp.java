@@ -201,6 +201,7 @@ public class EvilCorpApp {
 						if (closeAccount.getBalance() == 0) {
 							database.deleteTranscations(close);
 							database.deleteAccount(close);
+							System.out.println("Account# " + closeAccount.getNumber() + " is closed.");
 						} else {
 							System.out
 									.println("You can not close that account because it does not have a"
@@ -213,7 +214,11 @@ public class EvilCorpApp {
 					}
 					break;
 				case (4):
-					System.out.println(database.transactionHistory(member));
+					String history = database.transactionHistory(member);
+					if (history.equalsIgnoreCase("")){
+						System.out.println("No Transaction History");
+					}else
+						System.out.println(history);
 					break;
 
 				case (5):
