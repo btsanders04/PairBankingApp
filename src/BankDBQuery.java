@@ -112,6 +112,28 @@ public class BankDBQuery {
     	return a;
     }
     
+    public Account getAccount(String userId, int type){ 
+    	Account a = null;
+    	ResultSet result;
+		try {
+			String sql = "select * from account where member_id = '" + userId + "' and ACCOUNTTYPE  = " + type;
+			result = getFromDB(sql);
+			
+			if(result.next()){
+				String acctNum = result.getString("AccountNumber");
+				int acctType = result.getInt("AccountType");
+				double bal = result.getDouble("balance");
+				a = new Account(acctNum,userId,acctType);
+				a.setBalance(bal);
+			}
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+    	return a;
+    }
+    
     public void storeAccount(Account account){
     	
     	try {
